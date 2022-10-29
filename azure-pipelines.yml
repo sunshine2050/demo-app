@@ -1,0 +1,30 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Install and run Ansible
+  displayName: Install and run Ansible
+  jobs:
+  - job: Install-Run-Ansible
+    displayName: Install and Run Ansible
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          sudo apt-add-repository ppa:ansible/ansible
+          sudo apt-get update
+          sudo apt install ansible
+          ansible-playbook playbook.yaml
