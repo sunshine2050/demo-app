@@ -13,7 +13,7 @@ def read_db_config():
         port = args["DB_PORT"]
         driver = '{ODBC Driver 18 for SQL Server}'
 
-        params = f'DRIVER={driver};SERVER={server}, {port};DATABASE={database};UID={username};PWD={password}'
+        params = f'DRIVER={driver};SERVER={server},{port};DATABASE={database};UID={username};PWD={password}'
     return params
 
 app = Flask(__name__)

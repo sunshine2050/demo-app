@@ -1,4 +1,10 @@
 terraform {
+    backend "azurerm" {
+        resource_group_name  = "tfstate-store-group"
+        storage_account_name = "demotfstatestore"
+        container_name       = "tfstate"
+        key                  = "terraform.tfstate"
+    }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -53,7 +59,7 @@ resource "azurerm_container_group" "demo_container" {
 
   container {
     name   = "demo-app"
-    image  = "sunshine2050/demo-app:${image_build}"
+    image  = "sunshine2050/demo-app:${var.image_build}"
     cpu    = "0.5"
     memory = "1.5"
 

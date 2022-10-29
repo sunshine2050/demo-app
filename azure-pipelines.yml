@@ -8,11 +8,11 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-- stage: Modify_DB_conf
-  displayName: Modify DB configuration
-  jobs:
-  - job: Modify_DB_conf
-    displayName: Modify DB configuration
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
     pool: Ubuntu
     variables: 
     - group: TeraformEnvVars
@@ -21,28 +21,13 @@ stages:
         set -e
         echo "DB_USER: \"$TF_VAR_db_user\"" >> db_conf.yaml
         echo "DB_PASS: \"$TF_VAR_db_pass\"" >> db_conf.yaml
-        cat db_conf.yaml
-      name: 'Configure_DB'
-      displayName: 'Pass DB_USER and DB_PASS to our application'
-      env:
-        TF_VAR_db_user: $(DB_USER)
-        TF_VAR_db_pass: $(DB_PASS)
-
-- stage: Build
-  displayName: Build image
-  dependsOn: Modify_DB_conf
-  jobs:  
-  - job: Build
-    displayName: Build
-    pool: Ubuntu
-    steps:
-    - script: |
-        set -e
-        sudo docker login
         sudo docker build . -t sunshine2050/demo-app:$(tag)
         sudo docker push sunshine2050/demo-app:$(tag)
       name: 'RunDocker'
       displayName: 'Run Docker'
+      env:
+        TF_VAR_db_user: $(DB_USER)
+        TF_VAR_db_pass: $(DB_PASS)
 - stage: Provision
   displayName: 'Terraforming on Azure...'
   dependsOn: Build
