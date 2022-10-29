@@ -17,7 +17,7 @@ stages:
       steps:
       - task: DockerInstaller@0
         inputs:
-          dockerVersion: '17.09.0-ce'
+          dockerVersion: "17.09.0-ce
 - stage: Modify_DB_conf
   displayName: Modify DB configuration
   dependsOn: Install_Docker
