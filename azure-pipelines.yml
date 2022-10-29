@@ -36,14 +36,12 @@ stages:
     displayName: Build
     pool: Ubuntu
     steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'sunshine2050/demo-app'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: |
-          $(tag)
+    - script: |
+        set -e
+        sudo docker build . -t sunshine2050/demo-app
+        sudo docker push sunshine2050/demo-app
+      name: 'RunDocker'
+      displayName: 'Run Docker'
 - stage: Provision
   displayName: 'Terraforming on Azure...'
   dependsOn: Build
