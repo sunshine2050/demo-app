@@ -1,7 +1,3 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - master
 
@@ -11,6 +7,8 @@ resources:
 stages:
 - stage: Install_run_Ansible
   displayName: Install and run Ansible
+  pool:
+    vmImage: 'ubuntu-focal'
   jobs:
   - job: Install_run_Ansible
     displayName: Install and Run Ansible
