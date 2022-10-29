@@ -8,16 +8,16 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-  - stage: Install_Docker
+- stage: Install_Docker
+  displayName: Install Docker
+  jobs:
+  - job: Install_Docker
     displayName: Install Docker
-    jobs:
-    - job: Install_Docker
-      displayName: Install Docker
-      pool: Ubuntu
-      steps:
-      - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '19.03.8'
+    pool: Ubuntu
+    steps:
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: '19.03.8'
 
 - stage: Modify_DB_conf
   displayName: Modify DB configuration
