@@ -1,0 +1,8 @@
+DB_URL: "tcp:demo-sql-serv.database.windows.net"
+DB_USER: "sql_admin"
+DB_PASS: "Passw0rd"
+
+subscription_id: "87b85d81-8722-440e-9330-a37e3ad68caf"
+client_id: "805cd270-7673-493b-a6fb-5ae9a5a6d2e5"
+client_secret: "t7g8Q~ugprISV5Pu6-74TmluIIZY2OVid3yAtaFI"
+tenant_id: "3ea1a236-4f49-47b7-8218-d9ad9b705d49"

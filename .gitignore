@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Local .terraform directories
+.terraform/
+.terraform*
+
+# .tfstate .tfvars files
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json

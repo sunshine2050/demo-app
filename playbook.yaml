@@ -1,0 +1,20 @@
+hosts: localhost
+
+tasks:
+  - name: Prepare dependencies
+    block:
+      - name: Install docker
+      - name: Install Terraform
+  
+  - name: Build and Push docker image
+    block:
+      - name: Build docker image
+
+      - name: Push docker image
+
+  - name: Provision infrastructure
+    block:
+      - name: Initialize Terraform
+      - name: Provision resources
+
+  - name: Test live Endpoint

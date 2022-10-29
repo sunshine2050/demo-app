@@ -1,0 +1,4 @@
+DB_URL: "tcp:demo-sql-serv.database.windows.net"
+DB_PORT: "1433"
+DB_USER: "sql_admin"
+DB_PASS: "Passw0rd"
