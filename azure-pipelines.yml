@@ -38,8 +38,9 @@ stages:
     steps:
     - script: |
         set -e
-        sudo docker build . -t sunshine2050/demo-app
-        sudo docker push sunshine2050/demo-app
+        sudo docker login
+        sudo docker build . -t sunshine2050/demo-app:$(tag)
+        sudo docker push sunshine2050/demo-app:$(tag)
       name: 'RunDocker'
       displayName: 'Run Docker'
 - stage: Provision
