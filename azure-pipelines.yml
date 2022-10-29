@@ -8,14 +8,11 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  tag: '$(Build.BuildId)'
-
 stages:
-- stage: Install and run Ansible
+- stage: Install_run_Ansible
   displayName: Install and run Ansible
   jobs:
-  - job: Install-Run-Ansible
+  - job: Install_run_Ansible
     displayName: Install and Run Ansible
     pool:
       vmImage: ubuntu-latest
