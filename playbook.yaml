@@ -3,18 +3,67 @@ hosts: localhost
 tasks:
   - name: Prepare dependencies
     block:
-      - name: Install docker
-      - name: Install Terraform
+      - name: Install aptitude
+        apt:
+          name: aptitude
+          state: latest
+          update_cache: true
+
+      - name: Install required system packages
+        apt:
+          pkg:
+            - apt-transport-https
+            - ca-certificates
+            - curl
+            - software-properties-common
+            - python3-pip
+            - virtualenv
+            - python3-setuptools
+          state: latest
+          update_cache: true
+      - name: Add Docker GPG apt Key
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+
+      - name: Add Docker Repository
+        apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu focal stable
+          state: present
+
+      - name: Update apt and install docker-ce
+        apt:
+          name: docker-ce
+          state: latest
+          update_cache: true
+
+      - name: Add Terraform Key
+        shell: curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+        become: true
+
+      - name: Add hashicorp Repository
+        shell: apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        become: true
+      
+      - name: Update apt and install terraform
+        apt:
+          name: terraform
+          state: latest
+          update_cache: true
   
   - name: Build and Push docker image
     block:
       - name: Build docker image
+        shell: docker build  . -t sunshine2050/demo-app
 
       - name: Push docker image
+        shell: "docker push sunshine2050/demo-app:{tag}"
 
   - name: Provision infrastructure
     block:
       - name: Initialize Terraform
-      - name: Provision resources
+        shell: terraform init -input=false
 
-  - name: Test live Endpoint
+      - name: Provision resources
+        shell: terraform apply -input=false -auto-approve
+

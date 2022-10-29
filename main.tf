@@ -53,7 +53,7 @@ resource "azurerm_container_group" "demo_container" {
 
   container {
     name   = "demo-app"
-    image  = "sunshine2050/demo-app"
+    image  = "sunshine2050/demo-app:${image_build}"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -63,7 +63,12 @@ resource "azurerm_container_group" "demo_container" {
     }
   }
 
-  depends_on = [azurerm_sql_database.sql_database]
+  diagnostics {
+    log_analytics {
+      workspace_id  = azurerm_log_analytics_workspace.demo_logs.workspace_id
+      workspace_key = azurerm_log_analytics_workspace.demo_logs.primary_shared_key
+    }
+  }
 
   tags = {
     environment = "demo"
