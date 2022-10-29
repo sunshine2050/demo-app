@@ -7,8 +7,7 @@ resources:
 stages:
 - stage: Install_run_Ansible
   displayName: Install and run Ansible
-  pool:
-    vmImage: 'ubuntu-focal'
+  pool: Ubuntu
   jobs:
   - job: Install_run_Ansible
     displayName: Install and Run Ansible
