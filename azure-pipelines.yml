@@ -8,8 +8,19 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
+  - stage: Install_Docker
+    displayName: Install Docker
+    jobs:
+      job: Install_Docker
+      displayName: Install Docker
+      pool: Ubuntu
+      steps:
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce'
 - stage: Modify_DB_conf
   displayName: Modify DB configuration
+  dependsOn: Install_Docker
   jobs:
   - job: Modify_DB_conf
     displayName: Modify DB configuration
@@ -21,6 +32,7 @@ stages:
         set -e
         echo "DB_USER: \"$TF_VAR_db_user\"" >> db_conf.yaml
         echo "DB_PASS: \"$TF_VAR_db_pass\"" >> db_conf.yaml
+        cat db_conf.yaml
       name: 'Configure_DB'
       displayName: 'Pass DB_USER and DB_PASS to our application'
       env:
