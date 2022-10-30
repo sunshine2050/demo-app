@@ -19,8 +19,8 @@ stages:
     steps:
     - script: |
         set -e
-        echo "DB_USER: \"$TF_VAR_db_user\"" >> db_conf.yaml
-        echo "DB_PASS: \"$TF_VAR_db_pass\"" >> db_conf.yaml
+        echo "DB_USER: \"$TF_VAR_db_user\"" >> src/db_conf.yaml
+        echo "DB_PASS: \"$TF_VAR_db_pass\"" >> src/db_conf.yaml
         sudo docker build . -t sunshine2050/demo-app:$(tag)
         sudo docker push sunshine2050/demo-app:$(tag)
       name: 'RunDocker'
@@ -40,6 +40,7 @@ stages:
     steps:
     - script: |
         set -e
+        cd terraform/
         terraform init -input=false
         terraform apply -input=false -auto-approve
       name: 'RunTerraform'

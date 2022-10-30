@@ -1,8 +1,7 @@
 FROM python:3.9
 WORKDIR /python-docker
-COPY requirements.txt requirements.txt
+COPY src/ .
 RUN pip3 install -r requirements.txt
-COPY . .
 EXPOSE 5000
 ENV ACCEPT_EULA Y
 RUN apt-get update \
