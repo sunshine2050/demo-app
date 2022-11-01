@@ -62,7 +62,7 @@ stages:
   jobs:
   - job: ApprovalStage
     displayName: 'Approving terradform provisioning'
-    pool: Ubuntu
+    pool: server
     steps:
       - task: ManualIntervention@8
         inputs:
