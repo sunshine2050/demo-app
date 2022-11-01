@@ -28,9 +28,48 @@ stages:
       env:
         TF_VAR_db_user: $(DB_USER)
         TF_VAR_db_pass: $(DB_PASS)
-- stage: Provision
+- stage: Plan
   displayName: 'Terraforming on Azure...'
   dependsOn: Build
+  jobs:
+  - job: Plan
+    displayName: 'Planning Container Instance'
+    pool: Ubuntu
+    variables: 
+    - group: TeraformEnvVars
+    steps:
+    - script: |
+        set -e
+        cd terraform/
+        terraform init -input=false
+        terraform plan
+
+        terraform apply -input=false -auto-approve
+      name: 'RunTerraform'
+      displayName: 'Run Terraform'
+      env:
+        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+        ARM_TENANT_ID: $(ARM_TENANT_ID)
+        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+        TF_VAR_image_build: $(tag)
+        TF_VAR_db_user: $(DB_USER)
+        TF_VAR_db_pass: $(DB_PASS)
+
+- stage: ManualProvisionApproval
+  displayName: 'Approving ...'
+  dependsOn: Plan
+  jobs:
+  - job: ApprovalStage
+    displayName: 'Approving terradform provisioning'
+    pool: Ubuntu
+    steps:
+      - task: ManualIntervention@8
+        inputs:
+          instructions: 'Do you approve ?'
+- stage: Provision
+  displayName: 'Terraforming on Azure...'
+  dependsOn: ManualProvisionApproval
   jobs:
   - job: Provision
     displayName: 'Provisioning Container Instance'
@@ -41,7 +80,6 @@ stages:
     - script: |
         set -e
         cd terraform/
-        terraform init -input=false
         terraform apply -input=false -auto-approve
       name: 'RunTerraform'
       displayName: 'Run Terraform'
